@@ -20,9 +20,49 @@ namespace TV_Shayhilislamov
     /// </summary>
     public partial class MainWindow : Window
     {
+        Classes.TV TV = new Classes.TV();
+
         public MainWindow()
         {
             InitializeComponent();
+            VideoPlayer.Source = new Uri(TV.Channels[TV.ActiveChannel].Src);
+            VideoPlayer.Play();
+        }
+
+        private void BackChannel(object sender, RoutedEventArgs e)
+        {
+            TV.BlackChannel(VideoPlayer, NameChannel);
+        }
+
+        private void NextChannel(object sender, RoutedEventArgs e)
+        {
+            TV.NextChannel(VideoPlayer, NameChannel);
+        }
+        private void DownSound(object sender, RoutedEventArgs e)
+        {
+            TV.DownSound(VideoPlayer);
+        }
+        private void UpSound(object sender, RoutedEventArgs e)
+        {
+            TV.UpSound(VideoPlayer);
+        }
+
+        private void SearchChannel_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox channelNumber = sender as TextBox;
+            if (channelNumber != null)
+            {
+                if (int.TryParse(channelNumber.Text, out int channel))
+                {
+                    if (channel >= 0)
+                    {
+                        if (channel <= TV.Channels.Count - 1)
+                        {
+                            TV.SetChannel(VideoPlayer, NameChannel, channel);
+                        }
+                    }
+                }
+            }
         }
     }
 }
